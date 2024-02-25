@@ -432,7 +432,7 @@ def main():
             ocsvm_df["value"] = data["value"]
             ocsvm_df["anomaly"] = [1 if i == -1 else 0 for i in ocsvm_ret]
 
-            if st.button("Show LOF Graph"):
+            if st.button("Show OCSVM Graph"):
                 # Altair Plot for LOF
                 chart_ocsvm = (
                     alt.Chart(ocsvm_df)
