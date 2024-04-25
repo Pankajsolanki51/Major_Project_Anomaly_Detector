@@ -2,8 +2,7 @@
 import streamlit as st
 import pandas as pd
 import opendatasets as od
-from holoviews import opts
-hv.extension('bokeh')
+
 import altair as alt
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.svm import OneClassSVM
