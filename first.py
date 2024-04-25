@@ -114,7 +114,7 @@ def main():
 
         # Set timestamp as the index
         data.index = data["timestamp"]
-        data.drop(["timestamp"], axis=1, inplace=True)
+        
 
         # Display a slider to select the number of rows
         num_rows = st.slider("Select the number of rows", 5, 20000)
@@ -268,14 +268,14 @@ def main():
                 alt.Chart(iforest_df)
                 .mark_circle(size=60)
                 .encode(
-                    alt.X('timestamp:T', title='Time'),
+                    alt.X('index:T', title='Time'),
                     y=alt.Y('value:Q', title='Temperature'),
                     color=alt.condition(
                         alt.datum.anomaly == 1,
                         alt.value("orange"),
                         alt.value("skyblue"),
                     ),
-                    tooltip=["timestamp:T", "value:Q", "anomaly:N"],
+                    tooltip=["index:T", "value:Q", "anomaly:N"],
                 )
                 .properties(title="Isolation Forest Anomalies Observation")
             )
