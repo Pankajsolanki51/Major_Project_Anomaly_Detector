@@ -268,14 +268,14 @@ def main():
                 alt.Chart(iforest_df)
                 .mark_circle(size=60)
                 .encode(
-                    alt.X('index:timestamp', title='Time'),
+                    x=alt.X('index:T', title='Time'),
                     y=alt.Y('value:Q', title='Temperature'),
                     color=alt.condition(
                         alt.datum.anomaly == 1,
                         alt.value("orange"),
                         alt.value("skyblue"),
                     ),
-                    tooltip=["index:timestamp", "value:Q", "anomaly:N"],
+                    tooltip=["index:T", "value:Q", "anomaly:N"],
                 )
                 .properties(title="Isolation Forest Anomalies Observation")
             )
@@ -357,8 +357,8 @@ def main():
                 alt.Chart(lof_df)
                 .mark_circle(size=60)
                 .encode(
-                    x="index:T",
-                    y="value:Q",
+                    x=alt.X('index:T', title='Time'),
+                    y=alt.Y('value:Q', title='Temperature'),
                     color=alt.condition(
                         alt.datum.anomaly == 1, alt.value("red"), alt.value("skyblue")
                     ),
@@ -440,8 +440,8 @@ def main():
                     alt.Chart(ocsvm_df)
                     .mark_circle(size=60)
                     .encode(
-                        x="index:T",
-                        y="value:Q",
+                        x=alt.X('index:T', title='Time'),
+                        y=alt.Y('value:Q', title='Temperature'),
                         color=alt.condition(
                             alt.datum.anomaly == 1,
                             alt.value("pink"),
