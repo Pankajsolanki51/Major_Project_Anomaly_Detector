@@ -266,7 +266,7 @@ def main():
                 alt.Chart(iforest_df)
                 .mark_circle(size=60)
                 .encode(
-                    x="index:Time",
+                    x="index:T",
                     y="value:Q",
                     color=alt.condition(
                         alt.datum.anomaly == 1,
