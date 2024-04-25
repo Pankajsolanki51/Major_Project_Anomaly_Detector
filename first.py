@@ -266,8 +266,8 @@ def main():
                 alt.Chart(iforest_df)
                 .mark_circle(size=60)
                 .encode(
-                    x="index:T",
-                    y="value:Q",
+                    x="index:Time",
+                    y="value:Temperature",
                     color=alt.condition(
                         alt.datum.anomaly == 1,
                         alt.value("orange"),
