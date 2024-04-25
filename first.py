@@ -261,8 +261,13 @@ def main():
         # Display Isolation Forest graph button
         if st.button("Show Isolation Forest Graph"):
             anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index,
-                                                iforest_df.loc[iforest_df['anomaly']==1,'value'])]
-            (hv.Curve(iforest_df['value'], label="Temperature") * hv.Points(anomalies, label="Detected Points").opts(color='red', legend_position='bottom', size=2, title="Isolation Forest - Detected Points"))\.opts(opts.Curve(xlabel="Time", ylabel="Temperature", width=700, height=400,tools=['hover'],show_grid=True))
+                                                    iforest_df.loc[iforest_df['anomaly']==1,'value'])]
+            plot = (hv.Curve(iforest_df['value'], label="Temperature") * 
+                    hv.Points(anomalies, label="Detected Points")
+                    .opts(color='red', legend_position='bottom', size=2, title="Isolation Forest - Detected Points"))
+            plot = plot.opts(opts.Curve(xlabel="Time", ylabel="Temperature", width=700, height=400,tools=['hover'],show_grid=True))
+            st.header("Isolation Forest Evaluation Metric Observation")
+
 
         st.header("Isolation Forest Evaluation Metric Observation")
         if st.button("Show ROC-AUC and F1 score And Curve"):
