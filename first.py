@@ -261,13 +261,15 @@ def main():
 
         # Display Isolation Forest graph button
         if st.button("Show Isolation Forest Graph"):
+            anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index,
+                                                    iforest_df.loc[iforest_df['anomaly']==1,'value'])]
             # Altair Plot
             chart = (
                 alt.Chart(iforest_df)
                 .mark_circle(size=60)
                 .encode(
-                    x="index:T",
-                    y="value:Q",
+                    alt.X('index:T', title='Time'),
+                    y=alt.Y('value:Q', title='Temperature'),
                     color=alt.condition(
                         alt.datum.anomaly == 1,
                         alt.value("orange"),
