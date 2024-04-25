@@ -267,7 +267,7 @@ def main():
                 .mark_circle(size=60)
                 .encode(
                     x="index:Time",
-                    y="value:Temperature",
+                    y="value:Q",
                     color=alt.condition(
                         alt.datum.anomaly == 1,
                         alt.value("orange"),
