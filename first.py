@@ -117,7 +117,7 @@ def main():
         data.drop(["timestamp"], axis=1, inplace=True)
 
         # Display a slider to select the number of rows
-        num_rows = st.slider("Select the number of rows", 5, 200)
+        num_rows = st.slider("Select the number of rows", 5, 2000)
         st.dataframe(data.head(num_rows))
 
     # Define behavior for "EDA" page
