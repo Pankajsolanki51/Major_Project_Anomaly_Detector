@@ -268,14 +268,14 @@ def main():
                 alt.Chart(iforest_df)
                 .mark_circle(size=60)
                 .encode(
-                    alt.X('index:T', title='Time'),
+                    alt.X('timestamp:T', title='Time'),
                     y=alt.Y('value:Q', title='Temperature'),
                     color=alt.condition(
                         alt.datum.anomaly == 1,
                         alt.value("orange"),
                         alt.value("skyblue"),
                     ),
-                    tooltip=["index:T", "value:Q", "anomaly:N"],
+                    tooltip=["timestamp:T", "value:Q", "anomaly:N"],
                 )
                 .properties(title="Isolation Forest Anomalies Observation")
             )
