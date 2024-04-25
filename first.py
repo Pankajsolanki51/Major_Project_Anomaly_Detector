@@ -252,21 +252,38 @@ def main():
         # Load data
 
         # Isolation Forest
-        iforest_model = IsolationForest(n_estimators=300, contamination=0.1, max_samples=700)
-        iforest_ret = iforest_model.fit_predict(data['value'].values.reshape(-1, 1))
+        iforest_model = IsolationForest(
+            n_estimators=300, contamination=0.1, max_samples=700
+        )
+        iforest_ret = iforest_model.fit_predict(data["value"].values.reshape(-1, 1))
         iforest_df = pd.DataFrame()
-        iforest_df['value'] = data['value']
-        iforest_df['anomaly']  = [1 if i==-1 else 0 for i in iforest_ret]
+        iforest_df["index"] = data.index
+        iforest_df["value"] = data["value"]
+        iforest_df["anomaly"] = [1 if i == -1 else 0 for i in iforest_ret]
 
         # Display Isolation Forest graph button
         if st.button("Show Isolation Forest Graph"):
             anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index,
                                                     iforest_df.loc[iforest_df['anomaly']==1,'value'])]
-            plot = (hv.Curve(iforest_df['value'], label="Temperature") * 
-                    hv.Points(anomalies, label="Detected Points")
-                    .opts(color='red', legend_position='bottom', size=2, title="Isolation Forest - Detected Points"))
-            plot = plot.opts(opts.Curve(xlabel="Time", ylabel="Temperature", width=700, height=400,tools=['hover'],show_grid=True))
-            st.header("Isolation Forest Evaluation Metric Observation")
+            # Altair Plot
+            chart = (
+                alt.Chart(iforest_df)
+                .mark_circle(size=60)
+                .encode(
+                    x=alt.X('index:T', title='Time'),
+                    y=alt.Y('value:Q', title='Temperature'),
+                    color=alt.condition(
+                        alt.datum.anomaly == 1,
+                        alt.value("orange"),
+                        alt.value("skyblue"),
+                    ),
+                    tooltip=["index:T", "value:Q", "anomaly:N"],
+                )
+                .properties(title="Isolation Forest Anomalies Observation")
+            )
+
+            # Display Altair chart using st.altair_chart
+            st.altair_chart(chart, use_container_width=True)
 
 
         st.header("Isolation Forest Evaluation Metric Observation")
