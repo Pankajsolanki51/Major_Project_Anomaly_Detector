@@ -275,7 +275,7 @@ def main():
                         alt.value("orange"),
                         alt.value("skyblue"),
                     ),
-                    tooltip=["index:anomalies", "value:Q", "anomaly:N"],
+                    tooltip=["index:T", "value:Q", "anomaly:N"],
                 )
                 .properties(title="Isolation Forest Anomalies Observation")
             )
