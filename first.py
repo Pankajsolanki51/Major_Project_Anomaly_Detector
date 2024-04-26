@@ -265,7 +265,7 @@ def main():
              anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index,
                                                     iforest_df.loc[iforest_df['anomaly']==1,'value'])]
             # Altair Plot
-            chart = (
+             chart = (
                 alt.Chart(iforest_df)
                 .mark_circle(size=60)
                 .encode(
