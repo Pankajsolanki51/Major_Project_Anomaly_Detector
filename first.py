@@ -262,10 +262,10 @@ def main():
 
         # Display Isolation Forest graph button
         if st.button("Show Isolation Forest Graph"):
-             anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index,
+            anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index,
                                                     iforest_df.loc[iforest_df['anomaly']==1,'value'])]
             # Altair Plot
-             chart = (
+            chart = (
                 alt.Chart(iforest_df)
                 .mark_circle(size=60)
                 .encode(
@@ -282,7 +282,7 @@ def main():
             )
 
             # Display Altair chart using st.altair_chart
-            st.altair_chart(chart, use_container_width=True)
+        st.altair_chart(chart, use_container_width=True)
 
 
         st.header("Isolation Forest Evaluation Metric Observation")
