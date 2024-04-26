@@ -262,33 +262,21 @@ def main():
 
         # Display Isolation Forest graph button
         if st.button("Show Isolation Forest Graph"):
-             anomaly_points = [
-            ["2013-12-10 06:25:00.000000", "2013-12-12 05:35:00.000000"],
-            ["2013-12-15 17:50:00.000000", "2013-12-17 17:00:00.000000"],
-            ["2014-01-27 14:20:00.000000", "2014-01-29 13:30:00.000000"],
-            ["2014-02-07 14:55:00.000000", "2014-02-09 14:05:00.000000"],]
-            data["timestamp"] = pd.to_datetime(data["timestamp"])
-            data["Anomaly"] = 0
-            data["timestamp"] = pd.to_datetime(data["timestamp"])
-            data["year"] = data["timestamp"].apply(lambda x: x.year)
-            data["month"] = data["timestamp"].apply(lambda x: x.month)
-
-            
-            anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index,
+             anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index,
                                                     iforest_df.loc[iforest_df['anomaly']==1,'value'])]
             # Altair Plot
             chart = (
                 alt.Chart(iforest_df)
                 .mark_circle(size=60)
                 .encode(
-                    x=alt.X('yearmonth(timestamp):T', title='Year-Month'),
+                    x=alt.X('index:T', title='Time'),
                     y=alt.Y('value:Q', title='Temperature'),
                     color=alt.condition(
                         alt.datum.anomaly == 1,
                         alt.value("orange"),
                         alt.value("skyblue"),
                     ),
-                    tooltip=["timestamp:T", "value:Q", "anomaly:N"],
+                    tooltip=["index:T", "value:Q", "anomaly:N"],
                 )
                 .properties(title="Isolation Forest Anomalies Observation")
             )
