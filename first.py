@@ -355,28 +355,38 @@ def main():
         )
         lof_ret = lof_model.fit_predict(data["value"].values.reshape(-1, 1))
         lof_df = pd.DataFrame()
+        lof_df['timestamp'] = data['timestamp']
         lof_df["index"] = data.index
         lof_df["value"] = data["value"]
         lof_df["anomaly"] = [1 if i == -1 else 0 for i in lof_ret]
+        anomalies = [[ind, value] for ind, value in zip(lof_df[lof_df['anomaly']==1].index, 
+                                                        lof_df.loc[lof_df['anomaly']==1,'value'])]
 
         if st.button("Show LOF Graph"):
             # Altair Plot for LOF
-            chart_lof = (
-                alt.Chart(lof_df)
-                .mark_circle(size=60)
-                .encode(
-                    x=alt.X('index:T', title='Time'),
-                    y=alt.Y('value:Q', title='Temperature'),
-                    color=alt.condition(
-                        alt.datum.anomaly == 1, alt.value("red"), alt.value("skyblue")
-                    ),
-                    tooltip=["index:T", "value:Q", "anomaly:N"],
-                )
-                .properties(title="Local Outlier Factor (LOF) Anomalies Observation")
+            base = alt.Chart(lof_df.reset_index()).encode(
+            x=alt.X('timestamp:T', title='Time',axis=alt.Axis(format='%m/%Y')),
+            y=alt.Y('value:Q', title='Temperature'),
+            tooltip=["index:T", "value:Q"]
             )
 
+
+            line = base.mark_line(color='skyblue').encode()
+
+            points = base.transform_filter(
+            alt.datum.anomaly == 1
+            ).mark_circle(size=60, color='red').encode()
+            
+
             # Display Altair chart using st.altair_chart
-            st.altair_chart(chart_lof, use_container_width=True)
+            chart = (line + points).properties(
+            title="Isolation Forest - Detected Points",
+            width=700,
+            height=400
+            )
+
+            st.altair_chart(chart, use_container_width=True)
+            st.write('Number of anomalies:', lof_df['anomaly'].sum())
 
         st.header("LOF Evaluation Metric Observation")
         if st.button("Show LOF ROC-AUC and F1 score And Curve"):
