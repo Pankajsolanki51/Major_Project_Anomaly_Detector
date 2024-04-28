@@ -449,7 +449,7 @@ def main():
             ocsvm_model = OneClassSVM(nu=0.2, gamma=0.001, kernel="rbf")
             ocsvm_ret = ocsvm_model.fit_predict(data["value"].values.reshape(-1, 1))
             ocsvm_df = pd.DataFrame()
-            iforest_df['timestamp'] = data['timestamp']
+            ocsvm_df['timestamp'] = data['timestamp']
             ocsvm_df["index"] = data.index
             ocsvm_df["value"] = data["value"]
             ocsvm_df["anomaly"] = [1 if i == -1 else 0 for i in ocsvm_ret]
