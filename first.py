@@ -284,10 +284,6 @@ def main():
         )
 
         st.altair_chart(chart, use_container_width=True)
-        st.write('Columns in iforest_df:', iforest_df.columns.tolist())
-        st.write('Data type of timestamp:', iforest_df['timestamp'].dtype)
-        st.write(iforest_df['timestamp'].dtype)
-        iforest_df['timestamp'] = pd.to_datetime(iforest_df['timestamp'])
         st.write('Number of anomalies:', iforest_df['anomaly'].sum())
 
 
