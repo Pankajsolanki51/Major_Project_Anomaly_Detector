@@ -276,13 +276,20 @@ def main():
         ).mark_circle(size=60, color='orange').encode()
 
 # Combine the plots
+        st.altair_chart(chart, use_container_width=True)
+        st.write(iforest_df['timestamp'].dtype)
+        iforest_df['timestamp'] = pd.to_datetime(iforest_df['timestamp'])
+        st.write('Number of anomalies:', iforest_df['anomaly'].sum())
         chart = (line + points).properties(
             title="Isolation Forest - Detected Points",
             width=700,
             height=400
         )
 
-        st.altair_chart(chart, use_container_width=True)
+        
+
+
+
 
 
 
