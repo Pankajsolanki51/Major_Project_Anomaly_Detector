@@ -251,38 +251,39 @@ def main():
         # Load data
 
         # Isolation Forest
-        iforest_model = IsolationForest(
-            n_estimators=300, contamination=0.1, max_samples=700
-        )
-        iforest_ret = iforest_model.fit_predict(data["value"].values.reshape(-1, 1))
+        # Isolation Forest
+        iforest_model = IsolationForest(n_estimators=300, contamination=0.1, max_samples=700)
+        iforest_ret = iforest_model.fit_predict(data['value'].values.reshape(-1, 1))
         iforest_df = pd.DataFrame()
-        iforest_df["index"] = data.index
-        iforest_df["value"] = data["value"]
-        iforest_df["anomaly"] = [1 if i == -1 else 0 for i in iforest_ret]
+        iforest_df['value'] = data['value']
+        iforest_df['anomaly']  = [1 if i==-1 else 0 for i in iforest_ret]
+        anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index, 
+                                                        iforest_df.loc[iforest_df['anomaly']==1,'value'])]
 
-        # Display Isolation Forest graph button
-        if st.button("Show Isolation Forest Graph"):
-            anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index,
-                                                    iforest_df.loc[iforest_df['anomaly']==1,'value'])]
-            # Altair Plot
-            chart = (
-                alt.Chart(iforest_df)
-                .mark_circle(size=60)
-                .encode(
-                    x=alt.X('index:T', title='Time'),
-                    y=alt.Y('value:Q', title='Temperature'),
-                    color=alt.condition(
-                        alt.datum.anomaly == 1,
-                        alt.value("orange"),
-                        alt.value("skyblue"),
-                    ),
-                    tooltip=["index:T", "value:Q", "anomaly:N"],
-                )
-                .properties(title="Isolation Forest Anomalies Observation")
-            )
+# Altair Plot
+        base = alt.Chart(iforest_df.reset_index()).encode(
+        x=alt.X('index:T', title='Time'),
+        y=alt.Y('value:Q', title='Temperature'),
+        tooltip=["index:T", "value:Q"]
+        )
 
-            # Display Altair chart using st.altair_chart
+# Create the line plot
+        line = base.mark_line(color='skyblue').encode()
+
+# Create the points for anomalies
+        points = base.transform_filter(
+            alt.datum.anomaly == 1
+        ).mark_circle(size=60, color='red').encode()
+
+# Combine the plots
+        chart = (line + points).properties(
+            title="Isolation Forest - Detected Points",
+            width=700,
+            height=400
+        )
+
         st.altair_chart(chart, use_container_width=True)
+
 
 
         st.header("Isolation Forest Evaluation Metric Observation")
