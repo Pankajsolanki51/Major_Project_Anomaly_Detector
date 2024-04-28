@@ -262,7 +262,7 @@ def main():
 
 # Altair Plot
         base = alt.Chart(iforest_df.reset_index()).encode(
-        x=alt.X('index:T', title='Time'),
+        x=alt.X('timestamp:T', title='Time',axis=alt.Axis(format='%m/%Y')),
         y=alt.Y('value:Q', title='Temperature'),
         tooltip=["index:T", "value:Q"]
         )
@@ -273,7 +273,7 @@ def main():
 # Create the points for anomalies
         points = base.transform_filter(
             alt.datum.anomaly == 1
-        ).mark_circle(size=60, color='red').encode()
+        ).mark_circle(size=60, color='orange').encode()
 
 # Combine the plots
         chart = (line + points).properties(
