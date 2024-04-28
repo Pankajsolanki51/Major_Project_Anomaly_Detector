@@ -381,7 +381,7 @@ def main():
 
             # Display Altair chart using st.altair_chart
             chart = (line + points).properties(
-            title="Isolation Forest - Detected Points",
+            title="lOF - Detected Points",
             width=700,
             height=400
             )
@@ -449,30 +449,38 @@ def main():
             ocsvm_model = OneClassSVM(nu=0.2, gamma=0.001, kernel="rbf")
             ocsvm_ret = ocsvm_model.fit_predict(data["value"].values.reshape(-1, 1))
             ocsvm_df = pd.DataFrame()
+            iforest_df['timestamp'] = data['timestamp']
             ocsvm_df["index"] = data.index
             ocsvm_df["value"] = data["value"]
             ocsvm_df["anomaly"] = [1 if i == -1 else 0 for i in ocsvm_ret]
+            anomalies = [[ind, value] for ind, value in zip(ocsvm_df[ocsvm_df['anomaly']==1].index, 
+                                                        ocsvm_df.loc[ocsvm_df['anomaly']==1,'value'])]
 
             if st.button("Show OCSVM Graph"):
                 # Altair Plot for LOF
-                chart_ocsvm = (
-                    alt.Chart(ocsvm_df)
-                    .mark_circle(size=60)
-                    .encode(
-                        x=alt.X('index:T', title='Time'),
-                        y=alt.Y('value:Q', title='Temperature'),
-                        color=alt.condition(
-                            alt.datum.anomaly == 1,
-                            alt.value("pink"),
-                            alt.value("skyblue"),
-                        ),
-                        tooltip=["index:T", "value:Q", "anomaly:N"],
-                    )
-                    .properties(title="One Class SVM (OCSVM) Anomalies Observation")
+                base = alt.Chart(ocsvm_df.reset_index()).encode(
+                x=alt.X('timestamp:T', title='Time',axis=alt.Axis(format='%m/%Y')),
+                y=alt.Y('value:Q', title='Temperature'),
+                tooltip=["index:T", "value:Q"]
                 )
 
+
+                line = base.mark_line(color='skyblue').encode()
+
+
+                points = base.transform_filter(
+                    alt.datum.anomaly == 1
+                ).mark_circle(size=60, color='pink').encode()
+
             # Display Altair chart using st.altair_chart
-            st.altair_chart(chart_ocsvm, use_container_width=True)
+                chart = (line + points).properties(
+                    title="OCSVM - Detected Points",
+                    width=700,
+                    height=400
+                )
+
+                st.altair_chart(chart, use_container_width=True)
+                st.write('Number of anomalies:', iforest_df['anomaly'].sum())
 
         st.header("OCSVM Evaluation Metric Observation")
         if st.button("Show OCSVM ROC-AUC and F1 score And Curve"):
