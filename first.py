@@ -633,7 +633,7 @@ def main():
             """
             )
             components.iframe(
-                "https://projectsspankajsolanki.on.drv.tw/www.Anomaly_detection.com/",
+                "https://anomalydetectionpankajsolanki.netlify.app/",
                 height=1200,
                 width=800,
                 scrolling=True,
