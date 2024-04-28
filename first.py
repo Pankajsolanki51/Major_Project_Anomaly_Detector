@@ -255,6 +255,7 @@ def main():
         iforest_model = IsolationForest(n_estimators=300, contamination=0.1, max_samples=700)
         iforest_ret = iforest_model.fit_predict(data['value'].values.reshape(-1, 1))
         iforest_df = pd.DataFrame()
+        iforest_df['timestamp'] = data['timestamp']
         iforest_df['value'] = data['value']
         iforest_df['anomaly']  = [1 if i==-1 else 0 for i in iforest_ret]
         anomalies = [[ind, value] for ind, value in zip(iforest_df[iforest_df['anomaly']==1].index, 
@@ -283,6 +284,8 @@ def main():
         )
 
         st.altair_chart(chart, use_container_width=True)
+        st.write('Columns in iforest_df:', iforest_df.columns.tolist())
+        st.write('Data type of timestamp:', iforest_df['timestamp'].dtype)
         st.write(iforest_df['timestamp'].dtype)
         iforest_df['timestamp'] = pd.to_datetime(iforest_df['timestamp'])
         st.write('Number of anomalies:', iforest_df['anomaly'].sum())
