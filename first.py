@@ -352,6 +352,7 @@ def main():
         lof_model = LocalOutlierFactor(
             n_neighbors=500,
             contamination=0.07,
+            max_samples=700
         )
         lof_ret = lof_model.fit_predict(data["value"].values.reshape(-1, 1))
         lof_df = pd.DataFrame()
