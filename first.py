@@ -7,7 +7,7 @@ import altair as alt
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.svm import OneClassSVM
 from sklearn.ensemble import IsolationForest
-from sklearn.metrics import f1_score, roc_auc_score, roc_curve
+from sklearn.metrics import f1_score, roc_auc_score, roc_curve, precision_score, recall_score
 import matplotlib.pyplot as plt
 import streamlit.components.v1 as components
 
