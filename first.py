@@ -561,6 +561,8 @@ def main():
             # Initialize result dictionaries
             f1_scores = {}
             roc_scores = {}
+            precision_scores = {}
+            recall_scores = {}
 
             # Evaluate each model
             for model_name in models:
@@ -589,16 +591,26 @@ def main():
                 roc = roc_auc_score(
                     data["Anomaly"], [1 if i == -1 else 0 for i in model_result]
                 )
+                precision = precision_score(
+                    data["Anomaly"], [1 if i == -1 else 0 for i in model_result]
+                ) 
+                recall = recall_score(
+                    data["Anomaly"], [1 if i == -1 else 0 for i in model_result]
+                ) 
 
                 # Save results to dictionaries
                 f1_scores[model_name] = f1
                 roc_scores[model_name] = roc
+                precision_scores[model_name] = precision
+                recall_scores[model_name] = recall
 
             # Create a DataFrame to display results
             results_df = pd.DataFrame(
                 {
                     "Model": models,
                     "F1 Score": list(f1_scores.values()),
+                    "Precision": list(precision_scores.values()),
+                    "Recall": list(recall_scores.values()),
                     "ROC AUC Score": list(roc_scores.values()),
                 }
             )
