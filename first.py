@@ -609,9 +609,9 @@ def main():
                 {
                     "Model": models,
                     "F1 Score": list(f1_scores.values()),
+                    "ROC AUC Score": list(roc_scores.values()),
                     "Precision": list(precision_scores.values()),
                     "Recall": list(recall_scores.values()),
-                    "ROC AUC Score": list(roc_scores.values()),
                 }
             )
 
