@@ -40,7 +40,7 @@ def main():
     # Define behavior for "Home" page
     if page == "Home":
         st.title("MAJOR PROJECT - ANOMALY DETECTION")
-        st.subheader("Made by Pankaj Solanki - 2002152")
+        
         st.subheader(
             "From Computer science Branch of DayalBagh Educational Institute, Agra"
         )
