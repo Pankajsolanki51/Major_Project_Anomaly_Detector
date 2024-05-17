@@ -44,7 +44,7 @@ def main():
         st.subheader(
             "From Computer science Branch of DayalBagh Educational Institute, Agra"
         )
-        st.subheader("Under Supervision of Dr. D Bhagwan Das")
+        
 
         # Project overview and details
         st.markdown(
