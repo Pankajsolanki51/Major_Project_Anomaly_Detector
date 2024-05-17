@@ -71,8 +71,8 @@ def main():
             - Practice data pre-processing technique
             - Practice EDA technique for time-series data
             - Practice visualization techniques
-            - Practice anomaly detection (Isolation Forest)
-            - Practice improving model interpretability (SHAP)
+            - Practice anomaly detection (Isolation Forest,LOF,One Class-SVM)
+            
             """
         )
 
